@@ -27,4 +27,7 @@ name = "dialog"
 [dependencies.cursive]
 version = "0.20.0"
 default-features = false
-features = ["termion-backend"]
+features=["termion-backend"]
+
+[features]
+cursive-markdown = ["cursive/markdown"]
