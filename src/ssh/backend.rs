@@ -172,6 +172,9 @@ impl Backend {
                     TMouseButton::Right => MouseEvent::Press(MouseButton::Right),
                     TMouseButton::WheelUp => MouseEvent::WheelUp,
                     TMouseButton::WheelDown => MouseEvent::WheelDown,
+                    TMouseButton::WheelLeft | TMouseButton::WheelRight => {
+                        return Event::Unknown(vec![])
+                    }
                 };
 
                 if let MouseEvent::Press(btn) = event {
@@ -323,28 +326,15 @@ impl backend::Backend for Backend {
         // TODO: Is this important for ssh connections?
     }
 
-    fn print_at(&self, pos: Vec2, text: &str) {
+    fn move_to(&self, pos: Vec2) {
         self.write(format!(
-            "{}{}",
-            termion::cursor::Goto(1 + pos.x as u16, 1 + pos.y as u16),
-            text
+            "{}",
+            termion::cursor::Goto(1 + pos.x as u16, 1 + pos.y as u16)
         ));
     }
 
-    fn print_at_rep(&self, pos: Vec2, repetitions: usize, text: &str) {
-        if repetitions > 0 {
-            self.write(format!(
-                "{}{}",
-                termion::cursor::Goto(1 + pos.x as u16, 1 + pos.y as u16),
-                text
-            ));
-
-            let mut dupes_left = repetitions - 1;
-            while dupes_left > 0 {
-                self.write(format!("{}", text));
-                dupes_left -= 1;
-            }
-        }
+    fn print(&self, text: &str) {
+        self.write(text);
     }
 
     fn poll_event(&mut self) -> Option<Event> {

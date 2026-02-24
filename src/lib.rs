@@ -20,7 +20,7 @@ use tokio::sync::{
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SessionHandle(u64);
 
-pub trait AppSession {
+pub trait AppSession: Sync + Send {
     /// Called when the session starts. Returns a cursive view that will be displayed to the user.
     fn on_start(
         &mut self,
