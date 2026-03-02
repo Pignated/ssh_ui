@@ -349,7 +349,6 @@ impl backend::Backend for Backend {
             if !data.is_empty() {
                 if self.output_sender.is_closed() {
                     data.clear();
-                    self.close(); //Unsure if this needs to be called or not
                     return None;
                 }
                 self.output_sender
